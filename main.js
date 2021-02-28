@@ -18,13 +18,44 @@ var todoStorage = {
   }
 }
 
-
 const app = new Vue({
   el: '#app',
   data: {
-
+    todos: []
   },
-  methods: {
 
+  methods: {
+    doAdd: function(event, value){
+      // 入力コメント取得
+      var comment = this.$refs.comment
+      if (!comment.value.length) {
+        // 入力なしの場合は何もしない
+        return
+      }
+
+      this.todos.push({
+        id: todoStorage.uid++,
+        comment: comment.value,
+        state: 0
+      })
+
+      // 更新後、フォームの要素を殻にする
+      comment.value = ""
+    }
+  },
+
+  watch: {
+    todos:{
+      handler: function(todos) {
+        todoStorage.save(todos)
+      },
+      // ネストデータも監視
+      deep: true
+    }
+  },
+  
+  created() {
+    this.todos = todoStorage.fetch()
   }
+
 })
