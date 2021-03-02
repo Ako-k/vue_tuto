@@ -41,6 +41,16 @@ const app = new Vue({
 
       // 更新後、フォームの要素を殻にする
       comment.value = ""
+    },
+
+    // 状態変更処理
+    doChangeState: function(item){
+      item.state = item.state ? 0 : 1
+    },
+
+    doRemove: function(item){
+      var index = this.todos.indexOf(item)
+      this.todos.splice(index, 1)
     }
   },
 
