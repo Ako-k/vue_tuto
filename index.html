@@ -9,16 +9,25 @@
 
   <body>
     <div id="app">
+      検索条件：
+      <label v-for="label in options">
+        <input type="radio"
+          v-model="current"
+          v-bind:value="label.value">{{ label.label }}
+      </label>
+      <div>※削除はctrlと同時押しで動作</div>
+
       <table>
         <thead>
-          <tr v-for="item in todos" v-bind:key="item.id">
+          {{ computedTodos.length }} 件を表示中
+          <tr v-for="item in computedTodos" v-bind:key="item.id">
             <!-- forループ -->
             <th> {{ item.id }} </th>
             <td> {{ item.comment }} </td>
             <td class="button">
               <!-- 状態変更用ボタン　-->
               <button v-on:click="doChangeState(item)"> 
-                {{ item.state }}
+                {{ labels[item.state] }}
               </button>
             </td>
             <td class="button">

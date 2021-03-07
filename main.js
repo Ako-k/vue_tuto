@@ -21,7 +21,14 @@ var todoStorage = {
 const app = new Vue({
   el: '#app',
   data: {
-    todos: []
+    todos: [],
+    options: [
+      { value: -1, label: '全て'},
+      { value: 0, label: '作業中' },
+      { value: 1, label: '完了' },
+    ],
+    // 選択中のvalueデータ 初期値は-1
+    current : -1
   },
 
   methods: {
@@ -66,6 +73,21 @@ const app = new Vue({
   
   created() {
     this.todos = todoStorage.fetch()
-  }
+  },
+  
+  computed: {
+    computedTodos: function() {
+      return this.todos.filter(function(el){
+        return this.current < 0 ? true : this.current === el.state
+      }, this)
+    },
+    labels() {
+      return this.options.reduce(function(a, b) {
+        return Object.assign(a, { [b.value]: b.label })
+      }, {})
+    },
+
+  },
+
 
 })
